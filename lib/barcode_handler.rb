@@ -7,11 +7,7 @@ class BarcodeHandler
 
   def output
     products = { '123456789' => '£12.99', '098765432' => '£10.99', '098765433' => '£9.99' }
-    if barcode == '123456789'
-      products.fetch(barcode)
-    else
-      products.fetch(barcode)
-    end
+    products.fetch(barcode)
   end
 
 end
