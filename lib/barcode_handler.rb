@@ -1,3 +1,5 @@
+require 'barcode'
+
 class BarcodeHandler
   attr_accessor :barcode
 
@@ -22,7 +24,7 @@ class BarcodeHandler
   end
 
   def barcode_valid?
-    barcode.size == 10 || barcode.size == 13
+    Barcode::is_valid?(barcode)
   end
 end
 
