@@ -19,4 +19,12 @@ RSpec.describe Barcode do
     expect(Barcode::is_valid?('1' * 14)).to be false
     expect(Barcode::is_valid?('H' * 200)).to be false
   end
+
+  it 'returns true if a barcode has 10 chars' do 
+    expect(Barcode.is_valid?('0123456789')).to be true
+  end
+
+  it 'returns true if a barcode has 13 chars' do 
+    expect(Barcode.is_valid?('0123456789123')).to be true
+  end
 end

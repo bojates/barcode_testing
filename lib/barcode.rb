@@ -1,5 +1,5 @@
 module Barcode
   def self.is_valid?(barcode)
-    false
+    barcode.size == 10 || barcode.size == 13
   end
 end
