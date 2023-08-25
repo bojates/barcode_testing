@@ -9,9 +9,7 @@ class BarcodeHandler
 
   def output
     begin
-      Barcode::is_valid?(barcode)
       Barcode::verify_format(barcode)
-      
     rescue ArgumentError => e
       return 'ERROR: ' + e.message
     end
