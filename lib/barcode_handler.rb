@@ -7,6 +7,10 @@ class BarcodeHandler
     @barcode = barcode
   end
 
+  def call 
+    nil
+  end
+
   def output
     begin
       Barcode::verify_format(barcode)

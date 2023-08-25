@@ -2,6 +2,10 @@ require 'barcode_handler'
 
 RSpec.describe BarcodeHandler do 
 
+  it 'returns nil when called without an explicit output' do 
+    expect(BarcodeHandler.new('1234567890').call).to eq nil
+  end
+
   it 'Accepts a barcode and returns a price' do 
     expect(BarcodeHandler.new('1234567890').output).to eq '£12.99'
   end
@@ -22,4 +26,6 @@ RSpec.describe BarcodeHandler do
   it 'Sends an invalid barcode error if the input is correct format but barcode not found' do 
     expect(BarcodeHandler.new('1' * 13).output).to eq 'ERROR: Invalid barcode'
   end
+
+  it 'Does not return negative prices' 
 end
