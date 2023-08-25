@@ -4,6 +4,10 @@ module Barcode
   end
 
   def self.verify_format(barcode)
-    self.is_valid?(barcode)
+    if self.is_valid?(barcode)
+      true
+    else
+      raise ArgumentError, "Invalid input"
+    end
   end
 end

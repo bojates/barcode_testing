@@ -34,5 +34,9 @@ RSpec.describe Barcode do
     it 'returns true if passed a 10 digit string' do 
       expect(Barcode::verify_format('0123456789')).to be true
     end
+
+    it 'raises an error if passed empty string' do 
+      expect { Barcode::verify_format("").output }.to raise_error(ArgumentError, "Invalid input")
+    end
   end
 end
