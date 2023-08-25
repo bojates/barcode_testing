@@ -8,6 +8,14 @@ class BarcodeHandler
   end
 
   def output
+    begin
+      Barcode::is_valid?(barcode)
+      Barcode::verify_format(barcode)
+      
+    rescue ArgumentError => e
+      return 'ERROR: ' + e.message
+    end
+    
     products.fetch(barcode) { |barcode| 
       if barcode_valid?
         'ERROR: Invalid barcode' 
@@ -20,11 +28,20 @@ class BarcodeHandler
   private
   
   def products
-    { '1234567890' => '£12.99', '098765432123' => '£10.99', '098765433321' => '£9.99' }
+    { '1234567890' => '£12.99', 
+      '0987654321231' => '£10.99', 
+      '0987654333213' => '£9.99' }
   end
 
   def barcode_valid?
-    Barcode::is_valid?(barcode)
+    begin
+      Barcode::is_valid?(barcode)
+      Barcode::verify_format(barcode)
+      
+    rescue ArgumentError => e
+      e.message
+    end
+    
   end
 end
 

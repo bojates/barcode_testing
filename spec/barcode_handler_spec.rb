@@ -7,8 +7,8 @@ RSpec.describe BarcodeHandler do
   end
 
   it 'Accepts a different barcode and returns a different price' do 
-    expect(BarcodeHandler.new('098765432123').output).to eq '£10.99'
-    expect(BarcodeHandler.new('098765433321').output).to eq '£9.99'
+    expect(BarcodeHandler.new('0987654321231').output).to eq '£10.99'
+    expect(BarcodeHandler.new('0987654333213').output).to eq '£9.99'
   end
 
   it 'Send an error message for an empty input' do 
