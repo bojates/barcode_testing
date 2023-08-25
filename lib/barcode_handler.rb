@@ -6,13 +6,19 @@ class BarcodeHandler
   end
 
   def output
-    products.fetch(barcode) { 'ERROR: Invalid input' }
+    products.fetch(barcode) { |barcode| 
+      if barcode.size == 10 || barcode.size == 13
+        'ERROR: Invalid barcode' 
+      else
+        'ERROR: Invalid input' 
+      end
+    }
   end
   
   private
   
   def products
-    { '123456789' => '£12.99', '098765432' => '£10.99', '098765433' => '£9.99' }
+    { '1234567890' => '£12.99', '098765432123' => '£10.99', '098765433321' => '£9.99' }
   end
 end
 
@@ -25,6 +31,8 @@ end
 #  - Report Errors to the output, but not the input
 
 # Questions
+#  - How do we define a valid barcode?
+#  -  For now, just have 10 or 13 digits and don't worry about check digit checking
 #  - Handle 'listening', or just build the bit that accepts an input
 #  - Handle 'output' to LCD, or send a string somewhere? 
 
