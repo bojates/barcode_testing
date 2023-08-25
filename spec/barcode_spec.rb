@@ -1,7 +1,6 @@
 require 'barcode'
 
 RSpec.describe Barcode do 
-
   describe 'verify_format' do 
     it 'raise an error if a barcode is less than 10 chars' do 
       expect { Barcode::verify_format('a' * (1..9).to_a.sample) }.to raise_error ArgumentError, "Invalid input"
