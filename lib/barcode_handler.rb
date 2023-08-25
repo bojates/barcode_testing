@@ -6,7 +6,7 @@ class BarcodeHandler
   end
 
   def output
-    products.fetch(barcode)
+    products.fetch(barcode) { 'ERROR: Invalid input' }
   end
   
   private
