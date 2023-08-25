@@ -7,7 +7,7 @@ class BarcodeHandler
 
   def output
     products.fetch(barcode) { |barcode| 
-      if barcode.size == 10 || barcode.size == 13
+      if barcode_valid?
         'ERROR: Invalid barcode' 
       else
         'ERROR: Invalid input' 
@@ -19,6 +19,10 @@ class BarcodeHandler
   
   def products
     { '1234567890' => '£12.99', '098765432123' => '£10.99', '098765433321' => '£9.99' }
+  end
+
+  def barcode_valid?
+    barcode.size == 10 || barcode.size == 13
   end
 end
 
