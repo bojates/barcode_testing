@@ -19,7 +19,7 @@ RSpec.describe BarcodeHandler do
     expect(BarcodeHandler.new("Hello").output).to eq 'ERROR: Invalid input'
   end
 
-  it 'Sends an invalid barcode error if the input is correct format but not found' do 
+  it 'Sends an invalid barcode error if the input is correct format but barcode not found' do 
     expect(BarcodeHandler.new('1' * 13).output).to eq 'ERROR: Invalid barcode'
   end
 end
