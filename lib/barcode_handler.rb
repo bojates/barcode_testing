@@ -6,10 +6,14 @@ class BarcodeHandler
   end
 
   def output
-    products = { '123456789' => '£12.99', '098765432' => '£10.99', '098765433' => '£9.99' }
     products.fetch(barcode)
   end
-
+  
+  private
+  
+  def products
+    { '123456789' => '£12.99', '098765432' => '£10.99', '098765433' => '£9.99' }
+  end
 end
 
 ########
