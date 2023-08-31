@@ -27,14 +27,14 @@ class BarcodeHandler
     price = products[barcode]
 
     if price.nil? 
-      return 'ERROR: Invalid barcode' 
+      'ERROR: Invalid barcode' 
+    # TODO: check this is handling our cases correctly. 
+    # But wait for us to agree a data format for our products first.
+    elsif price.delete('£').to_f < 0 
+      'ERROR: Invalid price'
+    else      
+      price
     end
-
-    if price.delete('£').to_f < 0 
-      return 'ERROR: Invalid price'
-    end
-
-    price
   end
 
   def products
