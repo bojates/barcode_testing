@@ -18,13 +18,25 @@ class BarcodeHandler
       return 'ERROR: ' + e.message
     end
     
-    products.fetch(barcode) { |barcode| 
-      'ERROR: Invalid barcode' 
-    }
+    get_price(barcode)
   end
   
   private
   
+  def get_price(barcode) 
+    price = products[barcode]
+
+    if price.nil? 
+      return 'ERROR: Invalid barcode' 
+    end
+
+    if price.delete('£').to_f < 0 
+      return 'ERROR: Invalid price'
+    end
+
+    price
+  end
+
   def products
     { '1234567890' => '£12.99', 
       '0987654321231' => '£10.99', 

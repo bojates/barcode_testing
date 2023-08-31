@@ -26,6 +26,10 @@ RSpec.describe BarcodeHandler do
   it 'Sends an invalid barcode error if the input is correct format but barcode not found' do 
     expect(BarcodeHandler.new('1' * 13).output).to eq 'ERROR: Invalid barcode'
   end
-
-  it 'Does not return negative prices' 
+  
+  it 'Does not return negative prices' do 
+    barcode_hander = BarcodeHandler.new('9999999999')
+    allow(barcode_hander).to receive(:products).and_return({'9999999999' => '-£4'})
+    expect(barcode_hander.output).to eq 'ERROR: Invalid price'
+  end
 end
