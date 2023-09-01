@@ -90,8 +90,6 @@ RSpec.describe BarcodeHandler do
 
     sale.call('')
     expect(display.get_text).to eq 'ERROR: Invalid input'
-
-    # expect(BarcodeHandler.new("").output).to eq 'ERROR: Invalid input'
   end
 
   it 'Sends an invalid barcode error if the input is correct format but barcode not found' do 
@@ -101,8 +99,6 @@ RSpec.describe BarcodeHandler do
 
     sale.call('1' * 13)
     expect(display.get_text).to eq 'ERROR: Invalid barcode'
-
-    # expect(BarcodeHandler.new('1' * 13).output).to eq 'ERROR: Invalid barcode'
   end
   
   it 'Send an error message for an empty input' do 
@@ -112,17 +108,23 @@ RSpec.describe BarcodeHandler do
 
     sale.call()
     expect(display.get_text).to eq 'ERROR: Invalid input'
-
-    # expect(BarcodeHandler.new().output).to eq 'ERROR: Invalid input'
   end
 
   it 'Sends an error message for a string without numbers' do 
-    expect(BarcodeHandler.new("Hello").output).to eq 'ERROR: Invalid input'
+    display = Display.new
+    sale = Sale.new(display)
+    allow(sale).to receive(:products).and_return(products)
+
+    sale.call('Hello')
+    expect(display.get_text).to eq 'ERROR: Invalid input'
   end
   
   it 'Does not return negative prices' do 
-    barcode_handler = BarcodeHandler.new('9999999999')
-    allow(barcode_handler).to receive(:products).and_return(products)
-    expect(barcode_handler.output).to eq 'ERROR: Invalid price'
+    display = Display.new
+    sale = Sale.new(display)
+    allow(sale).to receive(:products).and_return(products)
+
+    sale.call('9999999999')
+    expect(display.get_text).to eq 'ERROR: Invalid price'
   end
 end
