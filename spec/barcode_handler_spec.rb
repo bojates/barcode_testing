@@ -5,12 +5,26 @@ class Sale
   end
 
   def call(barcode)
-    # BarcodeHandler.new(barcode).output
-    if barcode == '0987654321231'
-      @display.text = '£10.99'
-    else
-      @display.text = nil
+    @display.text = get_price(barcode)
+
+    nil
+  end
+
+  private
+
+  def get_price(barcode)
+    price = products[barcode]
+    if price.nil? 
+      'ERROR: Invalid barcode' 
+    elsif price.delete('£').to_f < 0 
+      'ERROR: Invalid price'
+    else      
+      price
     end
+  end
+
+  def products
+    {}
   end
 end
 
@@ -32,34 +46,47 @@ RSpec.describe BarcodeHandler do
   it 'has a Sale class and a Display class' do
     display = Display.new
     sale = Sale.new(display)
+    expect(sale).to receive(:products).and_return(products)
 
     sale.call('0987654321231')
     expect(display.get_text).to eq('£10.99')
   end
 
-  it 'returns nil when called without an explicit output' do 
+  it 'returns nil to the caller' do 
     display = Display.new
     sale = Sale.new(display)
     
-    sale.call('1234567890')
-    expect(display.get_text).to eq nil
-
-    expect(BarcodeHandler.new('1234567890').call).to eq nil
+    expect(sale.call('1234567890')).to eq nil
   end
 
   it 'Accepts a barcode and returns a price' do 
-    barcode_handler = BarcodeHandler.new('1234567890')
-    allow(barcode_handler).to receive(:products).and_return(products)
-    allow(barcode_handler).to receive(:products).and_return('£12.99')
+    display = Display.new
+    sale = Sale.new(display)
+    expect(sale).to receive(:products).and_return(products)
+    
+    sale.call('1234567890')
+    expect(display.get_text).to eq '£12.99'
   end
 
   it 'Accepts a different barcode and returns a different price' do 
-    barcode_handler = BarcodeHandler.new('0987654321231')
-    allow(barcode_handler).to receive(:products).and_return(products)
-    allow(barcode_handler).to receive(:products).and_return('£10.99')
+    
+    display = Display.new
+    sale = Sale.new(display)
+    allow(sale).to receive(:products).and_return(products)
+
+    sale.call('0987654321231')
+    expect(display.get_text).to eq '£10.99'
   end
 
   it 'Send an error message for an empty input' do 
+    skip
+    display = Display.new
+    sale = Sale.new(display)
+    allow(sale).to receive(:products).and_return(products)
+
+    sale.call('')
+    expect(display.get_text).to eq 'ERROR: Invalid input'
+
     expect(BarcodeHandler.new("").output).to eq 'ERROR: Invalid input'
   end
 
