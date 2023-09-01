@@ -38,7 +38,7 @@ RSpec.describe "POS" do
   end
 
   context 'barcode format is invalid' do
-    it 'sends an error message for an empty input' do 
+    it 'sends an error message for an empty string' do 
       sale.call('')
       expect(display.get_text).to eq error_invalid_barcode
     end
@@ -48,8 +48,8 @@ RSpec.describe "POS" do
       expect(display.get_text).to eq error_invalid_barcode
     end
 
-    it 'sends an error message for an empty input' do 
-      sale.call()
+    it 'sends an error message for a mixed string' do 
+      sale.call('123456789a')
       expect(display.get_text).to eq error_invalid_barcode
     end
 
@@ -59,7 +59,7 @@ RSpec.describe "POS" do
     end
   end
   
-  context 'the barcode format is ok and it is found, but the price makes no sense' do
+  context 'the barcode format is ok and it is found, but the price is not ok' do
     it 'Does not return negative prices' do 
       sale.call('9999999999')
       expect(display.get_text).to eq 'ERROR: Invalid price.'
