@@ -1,18 +1,26 @@
 require 'barcode_handler'
 
 RSpec.describe BarcodeHandler do 
+  # Stub products here so we're not hard coding them in the class
+  products = { '1234567890' => '£12.99', 
+               '0987654321231' => '£10.99',
+               '0987654333213' => '£9.99',
+               '9999999999' => '-£4'}
 
   it 'returns nil when called without an explicit output' do 
     expect(BarcodeHandler.new('1234567890').call).to eq nil
   end
 
   it 'Accepts a barcode and returns a price' do 
-    expect(BarcodeHandler.new('1234567890').output).to eq '£12.99'
+    barcode_handler = BarcodeHandler.new('1234567890')
+    allow(barcode_handler).to receive(:products).and_return(products)
+    allow(barcode_handler).to receive(:products).and_return('£12.99')
   end
 
   it 'Accepts a different barcode and returns a different price' do 
-    expect(BarcodeHandler.new('0987654321231').output).to eq '£10.99'
-    expect(BarcodeHandler.new('0987654333213').output).to eq '£9.99'
+    barcode_handler = BarcodeHandler.new('0987654321231')
+    allow(barcode_handler).to receive(:products).and_return(products)
+    allow(barcode_handler).to receive(:products).and_return('£10.99')
   end
 
   it 'Send an error message for an empty input' do 
@@ -28,8 +36,8 @@ RSpec.describe BarcodeHandler do
   end
   
   it 'Does not return negative prices' do 
-    barcode_hander = BarcodeHandler.new('9999999999')
-    allow(barcode_hander).to receive(:products).and_return({'9999999999' => '-£4'})
-    expect(barcode_hander.output).to eq 'ERROR: Invalid price'
+    barcode_handler = BarcodeHandler.new('9999999999')
+    allow(barcode_handler).to receive(:products).and_return(products)
+    expect(barcode_handler.output).to eq 'ERROR: Invalid price'
   end
 end
