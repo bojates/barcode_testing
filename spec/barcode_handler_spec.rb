@@ -5,8 +5,14 @@ class Sale
   end
 
   def call(barcode)
+    begin
+      Barcode::verify_format(barcode)
+    rescue ArgumentError => e
+      @display.text = 'ERROR: ' + e.message
+      return
+    end
+    
     @display.text = get_price(barcode)
-
     nil
   end
 
@@ -69,7 +75,6 @@ RSpec.describe BarcodeHandler do
   end
 
   it 'Accepts a different barcode and returns a different price' do 
-    
     display = Display.new
     sale = Sale.new(display)
     allow(sale).to receive(:products).and_return(products)
@@ -79,7 +84,6 @@ RSpec.describe BarcodeHandler do
   end
 
   it 'Send an error message for an empty input' do 
-    skip
     display = Display.new
     sale = Sale.new(display)
     allow(sale).to receive(:products).and_return(products)
