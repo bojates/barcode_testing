@@ -20,9 +20,9 @@ class Sale
     price = products[barcode]
 
     if price.nil? 
-      'ERROR: Invalid barcode' 
+      'ERROR: Barcode not found.' 
     elsif price.delete('£').to_f < 0 
-      'ERROR: Invalid price'
+      'ERROR: Invalid price.'
     else      
       price
     end
