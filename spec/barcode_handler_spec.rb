@@ -4,7 +4,7 @@ class Sale
     @display = display
   end
 
-  def call(barcode)
+  def call(barcode = '')
     begin
       Barcode::verify_format(barcode)
     rescue ArgumentError => e
@@ -91,19 +91,33 @@ RSpec.describe BarcodeHandler do
     sale.call('')
     expect(display.get_text).to eq 'ERROR: Invalid input'
 
-    expect(BarcodeHandler.new("").output).to eq 'ERROR: Invalid input'
+    # expect(BarcodeHandler.new("").output).to eq 'ERROR: Invalid input'
   end
 
+  it 'Sends an invalid barcode error if the input is correct format but barcode not found' do 
+    display = Display.new
+    sale = Sale.new(display)
+    allow(sale).to receive(:products).and_return(products)
+
+    sale.call('1' * 13)
+    expect(display.get_text).to eq 'ERROR: Invalid barcode'
+
+    # expect(BarcodeHandler.new('1' * 13).output).to eq 'ERROR: Invalid barcode'
+  end
+  
   it 'Send an error message for an empty input' do 
-    expect(BarcodeHandler.new().output).to eq 'ERROR: Invalid input'
+    display = Display.new
+    sale = Sale.new(display)
+    allow(sale).to receive(:products).and_return(products)
+
+    sale.call()
+    expect(display.get_text).to eq 'ERROR: Invalid input'
+
+    # expect(BarcodeHandler.new().output).to eq 'ERROR: Invalid input'
   end
 
   it 'Sends an error message for a string without numbers' do 
     expect(BarcodeHandler.new("Hello").output).to eq 'ERROR: Invalid input'
-  end
-
-  it 'Sends an invalid barcode error if the input is correct format but barcode not found' do 
-    expect(BarcodeHandler.new('1' * 13).output).to eq 'ERROR: Invalid barcode'
   end
   
   it 'Does not return negative prices' do 
