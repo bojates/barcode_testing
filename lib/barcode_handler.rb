@@ -3,7 +3,7 @@ require 'barcode'
 class BarcodeHandler
   attr_accessor :barcode
 
-  def initialize(barcode)
+  def initialize(barcode = "")
     @barcode = barcode
   end
 

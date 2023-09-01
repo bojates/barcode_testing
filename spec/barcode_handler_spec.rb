@@ -1,4 +1,22 @@
 require 'barcode_handler'
+class Sale
+  def initialize(display)
+    @display = display
+  end
+
+  def call(barcode)
+    # BarcodeHandler.new(barcode).output
+    @display.text = '£10.99'
+  end
+end
+
+class Display
+  attr_accessor :text
+
+  def get_text
+    text
+  end
+end
 
 RSpec.describe BarcodeHandler do 
   # Stub products here so we're not hard coding them in the class
@@ -6,6 +24,13 @@ RSpec.describe BarcodeHandler do
                '0987654321231' => '£10.99',
                '0987654333213' => '£9.99',
                '9999999999' => '-£4'}
+
+  it 'has a Sale class and a Display class' do
+    display = Display.new
+    sale = Sale.new(display)
+    sale.call('0987654321231')
+    expect(display.get_text).to eq('£10.99')
+  end
 
   it 'returns nil when called without an explicit output' do 
     expect(BarcodeHandler.new('1234567890').call).to eq nil
@@ -25,6 +50,10 @@ RSpec.describe BarcodeHandler do
 
   it 'Send an error message for an empty input' do 
     expect(BarcodeHandler.new("").output).to eq 'ERROR: Invalid input'
+  end
+
+  it 'Send an error message for an empty input' do 
+    expect(BarcodeHandler.new().output).to eq 'ERROR: Invalid input'
   end
 
   it 'Sends an error message for a string without numbers' do 
