@@ -1,4 +1,5 @@
-require 'barcode_handler'
+require 'barcode'
+
 class Sale
   def initialize(display)
     @display = display
@@ -42,7 +43,7 @@ class Display
   end
 end
 
-RSpec.describe BarcodeHandler do 
+RSpec.describe "POS" do 
   # Stub products here so we're not hard coding them in the class
   products = { '1234567890' => '£12.99', 
                '0987654321231' => '£10.99',
