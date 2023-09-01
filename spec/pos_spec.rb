@@ -1,47 +1,5 @@
 require 'barcode'
-
-class Sale
-  def initialize(display)
-    @display = display
-  end
-
-  def call(barcode = '')
-    begin
-      Barcode::verify_format(barcode)
-    rescue ArgumentError => e
-      @display.text = 'ERROR: ' + e.message
-      return
-    end
-    
-    @display.text = get_price(barcode)
-    nil
-  end
-
-  private
-
-  def get_price(barcode)
-    price = products[barcode]
-    if price.nil? 
-      'ERROR: Invalid barcode' 
-    elsif price.delete('£').to_f < 0 
-      'ERROR: Invalid price'
-    else      
-      price
-    end
-  end
-
-  def products
-    {}
-  end
-end
-
-class Display
-  attr_accessor :text
-
-  def get_text
-    text
-  end
-end
+require 'pos'
 
 RSpec.describe "POS" do 
   # Stub products here so we're not hard coding them in the class
@@ -49,15 +7,6 @@ RSpec.describe "POS" do
                '0987654321231' => '£10.99',
                '0987654333213' => '£9.99',
                '9999999999' => '-£4'}
-
-  it 'has a Sale class and a Display class' do
-    display = Display.new
-    sale = Sale.new(display)
-    expect(sale).to receive(:products).and_return(products)
-
-    sale.call('0987654321231')
-    expect(display.get_text).to eq('£10.99')
-  end
 
   it 'returns nil to the caller' do 
     display = Display.new
