@@ -6,7 +6,11 @@ class Sale
 
   def call(barcode)
     # BarcodeHandler.new(barcode).output
-    @display.text = '£10.99'
+    if barcode == '0987654321231'
+      @display.text = '£10.99'
+    else
+      @display.text = nil
+    end
   end
 end
 
@@ -28,11 +32,18 @@ RSpec.describe BarcodeHandler do
   it 'has a Sale class and a Display class' do
     display = Display.new
     sale = Sale.new(display)
+
     sale.call('0987654321231')
     expect(display.get_text).to eq('£10.99')
   end
 
   it 'returns nil when called without an explicit output' do 
+    display = Display.new
+    sale = Sale.new(display)
+    
+    sale.call('1234567890')
+    expect(display.get_text).to eq nil
+
     expect(BarcodeHandler.new('1234567890').call).to eq nil
   end
 
